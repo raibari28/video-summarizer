@@ -1,4 +1,5 @@
-fastapi
-uvicorn
 yt-dlp
 openai-whisper
+ffmpeg
+transformers
+torch
