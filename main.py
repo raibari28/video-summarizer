@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import yt_dlp
@@ -6,7 +7,6 @@ import os
 import uvicorn
 
 app = FastAPI()
-model = whisper.load_model("base")
 
 class VideoURL(BaseModel):
     url: str
@@ -14,19 +14,16 @@ class VideoURL(BaseModel):
 @app.post("/summarize")
 def summarize(data: VideoURL):
     try:
-        output_file = "audio.mp3"
+        output_file = "audio.m4a"
         ydl_opts = {
-            'format': 'bestaudio/best',
+            'format': 'bestaudio[ext=m4a]',
             'outtmpl': 'audio.%(ext)s',
-            'quiet': True,
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-            }],
+            'quiet': True
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([data.url])
 
+        model = whisper.load_model("tiny")
         result = model.transcribe(output_file)
         transcript = result["text"]
 
