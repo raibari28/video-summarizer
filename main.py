@@ -2,6 +2,8 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import yt_dlp
 import whisper
+import os
+import uvicorn
 
 app = FastAPI()
 model = whisper.load_model("base")
@@ -29,8 +31,13 @@ def summarize(data: VideoURL):
         transcript = result["text"]
 
         return {
-            "transcript": transcript[:4000]
+            "summary": transcript[:4000]
         }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
