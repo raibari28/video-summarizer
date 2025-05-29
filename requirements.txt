@@ -1,5 +1,5 @@
-yt-dlp
-openai-whisper
-ffmpeg
-transformers
-torch
+fastapi
+uvicorn
+pydantic
+yt_dlp
+whisper
