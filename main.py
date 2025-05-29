@@ -19,7 +19,8 @@ def summarize(data: VideoURL):
             'format': 'bestaudio[ext=m4a]',
             'outtmpl': output_file,
             'quiet': True,
-            'noplaylist': True
+            'noplaylist': True,
+            'cookiefile': 'cookies.txt'   # <--- add this line!
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([data.url])
