@@ -1,0 +1,6 @@
+{
+  "do_lower_case": false,
+  "unk_token": "<unk>",
+  "eos_token": "</s>",
+  "pad_token": "<pad>"
+}
