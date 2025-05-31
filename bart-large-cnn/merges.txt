@@ -1,5 +1,0 @@
-# merges file for BPE tokenizer
-t h
-th e
-e r
-r e
