@@ -19,3 +19,9 @@ git clone https://github.com/raibari28/video-summarizer.git
 cd video-summarizer
 pip install -r requirements.txt
 ```
+
+### 2. Run Tests
+
+```bash
+pytest
+```
