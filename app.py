@@ -6,13 +6,18 @@ from transformers import pipeline
 
 app = Flask(__name__)
 
-# (Optional: For Hugging Face Spaces or other environments that restrict caching dirs)
+# (Optional for Hugging Face Spaces and similar sandboxes)
 os.environ["HF_HOME"] = "/tmp/hf"
 os.environ["TRANSFORMERS_CACHE"] = "/tmp/hf"
 os.environ["XDG_CACHE_HOME"] = "/tmp/hf"
 
-# Summarizer pipeline (using BART from Hugging Face)
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+# Lazy load summarizer (better for fast container startup)
+summarizer = None
+def get_summarizer():
+    global summarizer
+    if summarizer is None:
+        summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+    return summarizer
 
 def download_audio(url, output_path="/tmp/audio.mp3"):
     if os.path.exists(output_path):
@@ -21,7 +26,7 @@ def download_audio(url, output_path="/tmp/audio.mp3"):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'quiet': True,
-        # Uncomment if using cookies.txt:
+        # Uncomment if you want to use cookies.txt:
         # 'cookiefile': 'cookies.txt',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -42,7 +47,8 @@ def chunk_text(text, chunk_size=1000):
     return [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
 
 def summarize_text(text, max_length=130, min_length=30):
-    summary = summarizer(text, max_length=max_length, min_length=min_length, do_sample=False)
+    pipe = get_summarizer()
+    summary = pipe(text, max_length=max_length, min_length=min_length, do_sample=False)
     return summary[0]["summary_text"]
 
 def summarize_long_text(text):
