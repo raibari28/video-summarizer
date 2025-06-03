@@ -9,4 +9,5 @@ COPY . .
 
 EXPOSE 7860
 
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:${PORT:-7860}"]
+CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:$PORT"]
+
