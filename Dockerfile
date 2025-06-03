@@ -15,7 +15,7 @@ RUN apt-get update && \
 COPY . .
 
 # Expose the app port (Flask default or Railway uses $PORT)
-EXPOSE 5000
+EXPOSE 7860
 
 # Set entrypoint for Railway compatibility (PORT env)
 CMD ["python", "app.py"]
