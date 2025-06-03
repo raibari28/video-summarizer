@@ -6,8 +6,10 @@ Summarize YouTube and other video content locally using ASR (Whisper) and text s
 
 - Download & extract audio from video links (YouTube, etc)
 - Transcribe audio to text using Whisper
-- Summarize transcript with BART transformer
-- REST API endpoint (`/summarize`) for integration (e.g. with GPTs)
+- Summarize transcripts with the BART transformer via a separate endpoint
+- REST API endpoints for integration:
+  - `/summarize` returns the video transcript
+  - `/summarize-transcript` returns the summary
 - Docker-ready for easy deployment (Railway, Hugging Face Spaces, etc)
 
 ## Quickstart
