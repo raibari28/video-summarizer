@@ -6,12 +6,12 @@ from transformers import pipeline
 
 app = Flask(__name__)
 
-# Optional for Hugging Face Spaces or other restricted cache dirs
+# For Hugging Face Spaces and cloud envs
 os.environ["HF_HOME"] = "/tmp/hf"
 os.environ["TRANSFORMERS_CACHE"] = "/tmp/hf"
 os.environ["XDG_CACHE_HOME"] = "/tmp/hf"
 
-# Lazy load summarizer for faster boot
+# Lazy loading for fast startup
 summarizer = None
 def get_summarizer():
     global summarizer
@@ -26,7 +26,7 @@ def download_audio(url, output_path="/tmp/audio.mp3"):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'quiet': True,
-        # Uncomment if you want to use cookies.txt for login-required videos:
+        # Uncomment to use cookies.txt for restricted videos
         # 'cookiefile': 'cookies.txt',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
