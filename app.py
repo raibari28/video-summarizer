@@ -27,8 +27,7 @@ def download_audio(url, output_path="/tmp/audio.mp3"):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'quiet': True,
-        # Uncomment to use cookies.txt for restricted videos:
-        # 'cookiefile': 'cookies.txt',
+        'cookiefile': 'cookies.txt',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
