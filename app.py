@@ -6,12 +6,12 @@ from transformers import pipeline
 
 app = Flask(__name__)
 
-# Set cache to writable dir if needed (optional, good for HF Spaces)
+# (Optional: For Hugging Face Spaces or other environments that restrict caching dirs)
 os.environ["HF_HOME"] = "/tmp/hf"
 os.environ["TRANSFORMERS_CACHE"] = "/tmp/hf"
 os.environ["XDG_CACHE_HOME"] = "/tmp/hf"
 
-# Use BART model from Hugging Face
+# Summarizer pipeline (using BART from Hugging Face)
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
 def download_audio(url, output_path="/tmp/audio.mp3"):
@@ -21,7 +21,7 @@ def download_audio(url, output_path="/tmp/audio.mp3"):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'quiet': True,
-        # Uncomment and set this if you use cookies.txt:
+        # Uncomment if using cookies.txt:
         # 'cookiefile': 'cookies.txt',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -53,6 +53,10 @@ def summarize_long_text(text):
 @app.route("/", methods=["GET"])
 def home():
     return "✅ Video Summarizer API is running. POST /summarize with {\"url\": \"...\"}"
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
 
 @app.route('/summarize', methods=['POST'])
 def summarize():
