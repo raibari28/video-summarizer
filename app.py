@@ -101,7 +101,9 @@ def summarize():
 
 @app.route('/summarize-transcript', methods=['POST'])
 def summarize_transcript():
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return jsonify({"error": "Invalid JSON payload."}), 400
     transcript = data.get("transcript")
     if not transcript:
         return jsonify({"error": "No transcript provided."}), 400
