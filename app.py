@@ -63,5 +63,5 @@ def summarize():
 
 if __name__ == '__main__':
     # For Railway, use 0.0.0.0 and port from $PORT env var
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get("PORT", 7860))
+    app.run(host="0.0.0.0", port=port)
