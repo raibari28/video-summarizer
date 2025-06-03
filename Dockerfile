@@ -14,4 +14,5 @@ COPY . .
 
 EXPOSE 7860
 
+ENV PORT 7860
 CMD gunicorn app:app --bind 0.0.0.0:$PORT
