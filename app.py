@@ -1,4 +1,5 @@
 import os
+import requests
 from flask import Flask, request, jsonify
 import yt_dlp
 import whisper
@@ -6,12 +7,12 @@ from transformers import pipeline
 
 app = Flask(__name__)
 
-# For Hugging Face Spaces and cloud envs
+# Optional for HF Spaces / cache
 os.environ["HF_HOME"] = "/tmp/hf"
 os.environ["TRANSFORMERS_CACHE"] = "/tmp/hf"
 os.environ["XDG_CACHE_HOME"] = "/tmp/hf"
 
-# Lazy loading for fast startup
+# Lazy load summarizer for faster boot
 summarizer = None
 def get_summarizer():
     global summarizer
@@ -26,7 +27,7 @@ def download_audio(url, output_path="/tmp/audio.mp3"):
         'format': 'bestaudio/best',
         'outtmpl': output_path,
         'quiet': True,
-        # Uncomment to use cookies.txt for restricted videos
+        # Uncomment to use cookies.txt for restricted videos:
         # 'cookiefile': 'cookies.txt',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
@@ -110,6 +111,26 @@ def summarize_transcript():
             "error": "SummarizationError",
             "message": str(e)
         }), 500
+
+@app.route('/search', methods=['GET'])
+def search_youtube():
+    query = request.args.get("q")
+    if not query:
+        return jsonify({"error": "Missing query param `q`"}), 400
+
+    serpapi_key = os.environ.get("SERPAPI_KEY")
+    if not serpapi_key:
+        return jsonify({"error": "SERPAPI_KEY environment variable not set"}), 500
+
+    params = {
+        "engine": "youtube",
+        "search_query": query,
+        "api_key": serpapi_key
+    }
+    resp = requests.get("https://serpapi.com/search", params=params)
+    data = resp.json()
+    # Return only video_results for simplicity
+    return jsonify({"results": data.get("video_results", [])})
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 7860))
