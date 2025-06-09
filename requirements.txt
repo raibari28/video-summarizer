@@ -6,3 +6,4 @@ torch
 ffmpeg-python
 gunicorn
 requests
+trafilatura
