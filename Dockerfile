@@ -1,8 +1,7 @@
 FROM python:3.10-slim
 
-# Install ffmpeg before installing Python dependencies
 RUN apt-get update \
-    && apt-get install -y ffmpeg \
+    && apt-get install -y ffmpeg build-essential gcc \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
