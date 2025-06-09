@@ -27,3 +27,8 @@ pip install -r requirements.txt
 ```bash
 pytest
 ```
+### 3. (Optional) Provide YouTube cookies
+
+Some videos require authentication (e.g. private or age-restricted content).
+Export your browser's cookies as `cookies.txt` and place the file in this
+directory if needed. `yt-dlp` will automatically use it when downloading.
