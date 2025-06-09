@@ -1,7 +1,0 @@
-{
-  "_name_or_path": "facebook/bart-large-cnn",
-  "architectures": ["BartForConditionalGeneration"],
-  "model_type": "bart",
-  "vocab_size": 50265,
-  "d_model": 1024
-}
