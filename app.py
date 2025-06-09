@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 import yt_dlp
 import whisper
 from transformers import pipeline
+import tempfile
 
 app = Flask(__name__)
 
@@ -20,7 +21,12 @@ def get_summarizer():
         summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
     return summarizer
 
-def download_audio(url, output_path="/tmp/audio.mp3"):
+def download_audio(url, output_path=None):
+    """Download audio from a video URL to a unique temporary file."""
+    if output_path is None:
+        temp = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
+        temp.close()
+        output_path = temp.name
     if os.path.exists(output_path):
         os.remove(output_path)
     ydl_opts = {
@@ -75,6 +81,8 @@ def summarize():
     try:
         audio_path, video_id, title, description = download_audio(url)
         transcript = transcribe(audio_path)
+        # Delete the temporary audio file after transcription
+        os.remove(audio_path)
         return jsonify({
             "video_id": video_id,
             "title": title,
