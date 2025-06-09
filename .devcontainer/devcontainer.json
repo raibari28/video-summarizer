@@ -1,0 +1,15 @@
+{
+  "name": "video-summarizer-dev",
+  "dockerFile": "../Dockerfile",
+  "context": "..",
+  "appPort": [7860],
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "postCreateCommand": "pip install --upgrade pip",
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter"
+  ]
+}
