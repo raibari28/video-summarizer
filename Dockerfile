@@ -1,8 +1,8 @@
 FROM python:3.10-slim
 
-# Install ffmpeg, build tools, and Python dev headers for dependencies like torch/whisper
-RUN apt-get update \
-    && apt-get install -y ffmpeg build-essential gcc git libffi-dev python3-dev \
+RUN apt-get update && apt-get install -y \
+    ffmpeg build-essential gcc git libffi-dev python3-dev \
+    libxml2-dev libxslt1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
