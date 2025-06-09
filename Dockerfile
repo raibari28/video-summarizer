@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 
-# Install ffmpeg and build tools
+# Install ffmpeg and build tools needed for Python dependencies
 RUN apt-get update \
     && apt-get install -y ffmpeg build-essential gcc \
     && rm -rf /var/lib/apt/lists/*
